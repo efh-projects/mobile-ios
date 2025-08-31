@@ -1,0 +1,347 @@
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
+import { SuccessCard } from "../components/card";
+import {
+  AppButton,
+  CustomText,
+  FormInput,
+  TextLink,
+} from "../components/reuseable";
+import { PopupModalWrapper, SafeAreaWrapper } from "../components/wrapper";
+import { CONSTANT, DEBOUNCE } from "../utils";
+
+export default function Main() {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    page: {
+      padding: CONSTANT.dimension.m,
+      alignItems: "center",
+      justifyContent: "space-between",
+      backgroundColor: CONSTANT.color[theme].primary,
+    },
+  });
+
+  return (
+    <SafeAreaWrapper style={styles.page} statusMode={"light"}>
+      <Text>App Name and Write ups</Text>
+
+      {/**auth */}
+      <AuthComponent />
+    </SafeAreaWrapper>
+  );
+}
+
+const AuthComponent = ({}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    component: {
+      width: "100%",
+      paddingVertical: CONSTANT.dimension.b,
+      paddingHorizontal: CONSTANT.dimension.m,
+      gap: CONSTANT.dimension.b,
+      borderRadius: CONSTANT.dimension.b,
+      backgroundColor: CONSTANT.color[theme].white,
+    },
+    top: {
+      width: "100%",
+      gap: CONSTANT.dimension.m,
+    },
+    seperator: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: CONSTANT.dimension.m,
+    },
+    seperatorLine: {
+      flex: 1,
+      height: 0.8,
+      backgroundColor: CONSTANT.color[theme].gray100,
+    },
+  });
+
+  //--handle sign in and sign up
+  const [signInIsVisible, setSignInIsVisible] = useState(false);
+
+  const [signUpIsVisible, setSignUpIsVisible] = useState(false);
+  const [signUpIsSuccessful, setSignUpIsSuccessful] = useState(false);
+
+  return (
+    <>
+      <View style={styles.component}>
+        <View style={styles.top}>
+          <AppButton
+            title="Sign In To Account"
+            onPress={() => setSignInIsVisible(true)}
+          />
+
+          <CustomText center>
+            Don't have an account?{" "}
+            <TextLink text="Sign Up" onPress={() => setSignUpIsVisible(true)} />
+          </CustomText>
+        </View>
+
+        {/**or */}
+        <View style={styles.seperator}>
+          <View style={styles.seperatorLine} />
+          <CustomText>Or continue with</CustomText>
+          <View style={styles.seperatorLine} />
+        </View>
+
+        {/**oauth */}
+        <OAuthComponent />
+      </View>
+
+      {/**signin modal */}
+      <SignInModal
+        isVisible={signInIsVisible}
+        setIsVisible={setSignInIsVisible}
+      />
+
+      {/**signup modal */}
+      <SignUpModal
+        isVisible={signUpIsVisible}
+        setIsVisible={setSignUpIsVisible}
+        setIsSuccessful={setSignUpIsSuccessful}
+      />
+
+      {/**signup success */}
+      <SuccessCard
+        isSuccessful={signUpIsSuccessful}
+        setIsSuccessful={setSignUpIsSuccessful}
+        path={"/verify/"}
+        pushRoute
+        title="Sign Up Successful"
+        description="Account has been created successfully. Proceed to verify your email"
+        buttonTitle="Continue"
+      />
+    </>
+  );
+};
+
+const OAuthComponent = ({}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    oauthTab: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: CONSTANT.dimension.m,
+    },
+    button: {
+      flex: 1,
+    },
+  });
+
+  //--##--sign in wit apple--##--//
+
+  //--##--sign in wit google--##--//
+
+  return (
+    <View style={styles.oauthTab}>
+      {/**sign in with apple */}
+      <View style={styles.button}>
+        <AppButton title="Apple" type="secondary" />
+      </View>
+
+      {/**sign in with google */}
+      <View style={styles.button}>
+        <AppButton title="Google" type="secondary" />
+      </View>
+    </View>
+  );
+};
+
+const SignInModal = ({ isVisible = false, setIsVisible = () => {} }) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    block: {
+      width: "100%",
+      gap: CONSTANT.dimension.m,
+      paddingBottom: CONSTANT.dimension.xxb,
+    },
+  });
+
+  //--
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const _signIn = DEBOUNCE(async () => {
+    const res = true;
+
+    if (res) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
+
+      //router.dismissTo("/(tabs)/");
+    }
+  });
+
+  return (
+    <PopupModalWrapper isVisible={isVisible} setIsVisible={setIsVisible}>
+      <View style={styles.block}>
+        <FormInput
+          label="Email"
+          placeholder="youremail@example.com"
+          icon={CONSTANT.icon.mail}
+          mode={CONSTANT.input_mode.email}
+          form={form}
+          setForm={setForm}
+          name={"email"}
+        />
+
+        <FormInput
+          label="Password"
+          placeholder="Enter your password"
+          icon={CONSTANT.icon.lock}
+          mode={CONSTANT.input_mode.password}
+          form={form}
+          setForm={setForm}
+          name={"password"}
+        />
+      </View>
+
+      <AppButton title="Sign In" onPress={_signIn} isLoading={isLoading} />
+
+      {/**terms modal */}
+      <TermsModal />
+    </PopupModalWrapper>
+  );
+};
+
+const SignUpModal = ({
+  isVisible = false,
+  setIsVisible = () => {},
+  setIsSuccessful = () => {},
+}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    block: {
+      width: "100%",
+      gap: CONSTANT.dimension.m,
+      paddingBottom: CONSTANT.dimension.xxb,
+    },
+  });
+
+  //--
+  const [form, setForm] = useState({
+    fullname: "",
+    phone: "",
+    email: "",
+    pass: "",
+    confirm_pass: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const _signUp = DEBOUNCE(async () => {
+    const res = true;
+
+    if (res) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
+
+      setIsSuccessful(true);
+    }
+  });
+
+  return (
+    <PopupModalWrapper
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
+      onCloseFunc={() => setIsSuccess(false)}
+    >
+      <View style={styles.block}>
+        <FormInput
+          label="What's Your Legal Name?"
+          placeholder="John Doe"
+          icon={CONSTANT.icon.user}
+          mode={CONSTANT.input_mode.text}
+          form={form}
+          setForm={setForm}
+          name={"fullname"}
+        />
+
+        <FormInput
+          label="Contact Phone Number"
+          placeholder="07000000000"
+          icon={CONSTANT.icon.user}
+          mode={CONSTANT.input_mode.text}
+          form={form}
+          setForm={setForm}
+          name={"phone"}
+        />
+
+        <FormInput
+          label="Email"
+          placeholder="youremail@example.com"
+          icon={CONSTANT.icon.mail}
+          mode={CONSTANT.input_mode.email}
+          form={form}
+          setForm={setForm}
+          name={"email"}
+        />
+
+        <FormInput
+          label="Password"
+          placeholder="Create a new password"
+          icon={CONSTANT.icon.lock}
+          mode={CONSTANT.input_mode.password}
+          form={form}
+          setForm={setForm}
+          name={"pass"}
+        />
+
+        <FormInput
+          label="Confirm Password"
+          placeholder="Repeat the password"
+          icon={CONSTANT.icon.lock}
+          mode={CONSTANT.input_mode.password}
+          form={form}
+          setForm={setForm}
+          name={"confirm_pass"}
+        />
+      </View>
+
+      <AppButton title="Sign Up" onPress={_signUp} isLoading={isLoading} />
+
+      {/**terms modal */}
+      <TermsModal />
+    </PopupModalWrapper>
+  );
+};
+
+const TermsModal = ({}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    component: {
+      width: "100%",
+      padding: CONSTANT.dimension.m,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });
+
+  //--
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <>
+      <View style={styles.component}>
+        <CustomText center>
+          By continuing, you agree to our{" "}
+          <TextLink text="Terms Of Use" onPress={() => setIsVisible(true)} />
+        </CustomText>
+      </View>
+
+      <PopupModalWrapper
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+      ></PopupModalWrapper>
+    </>
+  );
+};
