@@ -1,14 +1,9 @@
 import { Feather } from "@expo/vector-icons";
 import { memo, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { CONSTANT } from "../../utils";
+import CustomText from "./CustomText";
 
 const FormInput = ({
   type = "text",
@@ -55,8 +50,6 @@ const FormInputText = ({
       gap: CONSTANT.dimension.xs,
     },
     label: {
-      fontSize: CONSTANT.f_size.m,
-      fontWeight: CONSTANT.f_weight.semibold,
       color: CONSTANT.color[theme].black,
     },
     tab: {
@@ -98,7 +91,11 @@ const FormInputText = ({
 
   return (
     <View style={styles.component}>
-      {Boolean(label) && <Text style={styles.label}>{label}</Text>}
+      {Boolean(label) && (
+        <CustomText type="h4" style={styles.label}>
+          {label}
+        </CustomText>
+      )}
 
       <View
         style={[

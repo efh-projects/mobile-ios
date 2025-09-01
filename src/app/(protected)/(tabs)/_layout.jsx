@@ -10,6 +10,10 @@ export default function TabsLayout() {
     tab: {
       backgroundColor: CONSTANT.color[theme].white,
     },
+    scene: {
+      flex: 1,
+      backgroundColor: CONSTANT.color[theme].gray50,
+    },
   });
 
   return (
@@ -20,6 +24,7 @@ export default function TabsLayout() {
           tabBarStyle: [styles.tab],
           tabBarActiveTintColor: CONSTANT.color[theme].primary,
           tabBarInactiveTintColor: CONSTANT.color[theme].gray100,
+          sceneStyle: [styles.scene],
         }}
       >
         <Tabs.Screen name="index" options={{ title: "Packages" }} />

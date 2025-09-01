@@ -57,7 +57,7 @@ const AuthComponent = ({}) => {
     seperatorLine: {
       flex: 1,
       height: 0.8,
-      backgroundColor: CONSTANT.color[theme].gray100,
+      backgroundColor: CONSTANT.color[theme].gray50,
     },
   });
 
