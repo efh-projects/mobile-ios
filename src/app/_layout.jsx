@@ -15,12 +15,9 @@ export default function RootLayout() {
       {/**persist global states even on app reload */}
       <PersistGate loading={null} persistor={persistor}>
         <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="verify"
-            options={{ headerShown: false, animation: "slide_from_bottom" }}
-          />
-          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
+
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
         </Stack>
 
         <ToastManager />

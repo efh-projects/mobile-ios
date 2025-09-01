@@ -1,17 +1,17 @@
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
-import { SuccessCard } from "../components/card";
+import { SuccessCard } from "../../components/card";
 import {
   AppButton,
   CustomText,
   FormInput,
   IconCard,
   TextLink,
-} from "../components/reuseable";
-import { SafeAreaWrapper, ScrollWrapper } from "../components/wrapper";
-import { CONSTANT, DEBOUNCE } from "../utils";
+} from "../../components/reuseable";
+import { SafeAreaWrapper, ScrollWrapper } from "../../components/wrapper";
+import { CONSTANT, DEBOUNCE } from "../../utils";
 
 export default function VerifyEmail() {
   const theme = useSelector((state) => state.app.theme);
@@ -56,14 +56,21 @@ export default function VerifyEmail() {
       path: "/(tabs)/",
       dismissAll: true,
     },
-    signup: {
+    "sign-up": {
       path: "/(tabs)/",
       dismissAll: true,
+    },
+    "forgot-password": {
+      path: "/auth/new-password/",
+      dismissByCount: true,
+      dismissCount: 1,
     },
   };
 
   return (
     <SafeAreaWrapper showHeader={true}>
+      <Stack.Screen options={{ animation: "slide_from_bottom" }} />
+
       <ScrollWrapper containerStyle={styles.page}>
         <View style={styles.section}>
           <IconCard icon={CONSTANT.icon.shield} />
@@ -110,6 +117,8 @@ export default function VerifyEmail() {
         title="Verification Successful"
         buttonTitle="Continue"
         dismissAll={afterPaths[dir]?.dismissAll || false}
+        dismissByCount={afterPaths[dir]?.dismissByCount || false}
+        dismissCount={afterPaths[dir]?.dismissCount || 0}
       />
     </SafeAreaWrapper>
   );
