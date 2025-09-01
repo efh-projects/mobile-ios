@@ -1,15 +1,16 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { SuccessCard } from "../components/card";
+import { SuccessCard } from "../../components/card";
 import {
   AppButton,
   CustomText,
   FormInput,
   TextLink,
-} from "../components/reuseable";
-import { PopupModalWrapper, SafeAreaWrapper } from "../components/wrapper";
-import { CONSTANT, DEBOUNCE } from "../utils";
+} from "../../components/reuseable";
+import { PopupModalWrapper, SafeAreaWrapper } from "../../components/wrapper";
+import { CONSTANT, DEBOUNCE } from "../../utils";
 
 export default function Main() {
   const theme = useSelector((state) => state.app.theme);
@@ -56,15 +57,17 @@ const AuthComponent = ({}) => {
     seperatorLine: {
       flex: 1,
       height: 0.8,
-      backgroundColor: CONSTANT.color[theme].gray100,
+      backgroundColor: CONSTANT.color[theme].gray50,
     },
   });
 
-  //--handle sign in and sign up
+  //--handle sign in, sign up and forgot password
   const [signInIsVisible, setSignInIsVisible] = useState(false);
 
   const [signUpIsVisible, setSignUpIsVisible] = useState(false);
   const [signUpIsSuccessful, setSignUpIsSuccessful] = useState(false);
+
+  const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
 
   return (
     <>
@@ -96,6 +99,7 @@ const AuthComponent = ({}) => {
       <SignInModal
         isVisible={signInIsVisible}
         setIsVisible={setSignInIsVisible}
+        setForgotPasswordVisible={setForgotPasswordVisible}
       />
 
       {/**signup modal */}
@@ -109,11 +113,17 @@ const AuthComponent = ({}) => {
       <SuccessCard
         isSuccessful={signUpIsSuccessful}
         setIsSuccessful={setSignUpIsSuccessful}
-        path={"/verify/"}
+        path={"/auth/verify/?dir=sign-up"}
         pushRoute
         title="Sign Up Successful"
         description="Account has been created successfully. Proceed to verify your email"
         buttonTitle="Continue"
+      />
+
+      {/**forgot password modal */}
+      <ForgotPasswordModal
+        isVisible={forgotPasswordVisible}
+        setIsVisible={setForgotPasswordVisible}
       />
     </>
   );
@@ -152,13 +162,20 @@ const OAuthComponent = ({}) => {
   );
 };
 
-const SignInModal = ({ isVisible = false, setIsVisible = () => {} }) => {
+const SignInModal = ({
+  isVisible = false,
+  setIsVisible = () => {},
+  setForgotPasswordVisible = () => {},
+}) => {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     block: {
       width: "100%",
       gap: CONSTANT.dimension.m,
       paddingBottom: CONSTANT.dimension.xxb,
+    },
+    password: {
+      gap: CONSTANT.dimension.xs,
     },
   });
 
@@ -177,7 +194,7 @@ const SignInModal = ({ isVisible = false, setIsVisible = () => {} }) => {
         setIsVisible(false);
       }, 200);
 
-      //router.dismissTo("/(tabs)/");
+      router.dismissTo("/(tabs)/");
     }
   });
 
@@ -194,15 +211,27 @@ const SignInModal = ({ isVisible = false, setIsVisible = () => {} }) => {
           name={"email"}
         />
 
-        <FormInput
-          label="Password"
-          placeholder="Enter your password"
-          icon={CONSTANT.icon.lock}
-          mode={CONSTANT.input_mode.password}
-          form={form}
-          setForm={setForm}
-          name={"password"}
-        />
+        <View style={styles.password}>
+          <FormInput
+            label="Password"
+            placeholder="Enter your password"
+            icon={CONSTANT.icon.lock}
+            mode={CONSTANT.input_mode.password}
+            form={form}
+            setForm={setForm}
+            name={"password"}
+          />
+
+          <CustomText right>
+            <TextLink
+              text="Forgot Password?"
+              onPress={() => {
+                setForgotPasswordVisible(true);
+                setIsVisible(false);
+              }}
+            />
+          </CustomText>
+        </View>
       </View>
 
       <AppButton title="Sign In" onPress={_signIn} isLoading={isLoading} />
@@ -253,7 +282,7 @@ const SignUpModal = ({
     <PopupModalWrapper
       isVisible={isVisible}
       setIsVisible={setIsVisible}
-      onCloseFunc={() => setIsSuccess(false)}
+      onCloseFunc={() => setIsSuccessful(false)}
     >
       <View style={styles.block}>
         <FormInput
@@ -311,6 +340,59 @@ const SignUpModal = ({
 
       {/**terms modal */}
       <TermsModal />
+    </PopupModalWrapper>
+  );
+};
+
+const ForgotPasswordModal = ({
+  isVisible = false,
+  setIsVisible = () => {},
+}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    block: {
+      width: "100%",
+      paddingBottom: CONSTANT.dimension.xxb,
+    },
+  });
+
+  //--
+  const [form, setForm] = useState({
+    email: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const _checkEmail = DEBOUNCE(async () => {
+    const res = true;
+
+    if (res) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
+
+      router.push("/auth/verify/?dir=forgot-password");
+    }
+  });
+
+  return (
+    <PopupModalWrapper isVisible={isVisible} setIsVisible={setIsVisible}>
+      <View style={styles.block}>
+        <FormInput
+          label="Email"
+          placeholder="Enter your account email"
+          icon={CONSTANT.icon.mail}
+          mode={CONSTANT.input_mode.email}
+          form={form}
+          setForm={setForm}
+          name={"email"}
+        />
+      </View>
+
+      <AppButton
+        title="Verify Email"
+        onPress={_checkEmail}
+        isLoading={isLoading}
+      />
     </PopupModalWrapper>
   );
 };

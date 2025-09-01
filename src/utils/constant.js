@@ -54,6 +54,7 @@ const CONSTANT = {
   },
   pages: {
     verify: "Verification",
+    "new-password": "Create New Password",
   },
 };
 

@@ -3,11 +3,17 @@ import { StyleSheet, Text } from "react-native";
 import { useSelector } from "react-redux";
 import { CONSTANT } from "../../utils";
 
-const CustomText = ({ children, style, type = "p", center = false }) => {
+const CustomText = ({
+  children,
+  style,
+  type = "p",
+  center = false,
+  right = false,
+}) => {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
-    center: {
-      textAlign: "center",
+    position: {
+      textAlign: center ? "center" : right ? "right" : "left",
     },
     p: {
       fontSize: CONSTANT.f_size.s,
@@ -26,11 +32,7 @@ const CustomText = ({ children, style, type = "p", center = false }) => {
     },
   });
 
-  return (
-    <Text style={[styles[type], center && styles.center, style]}>
-      {children}
-    </Text>
-  );
+  return <Text style={[styles[type], styles.position, style]}>{children}</Text>;
 };
 
 export default memo(CustomText);
