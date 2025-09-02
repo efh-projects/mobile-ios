@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -152,12 +153,34 @@ const OAuthComponent = ({}) => {
     <View style={styles.oauthTab}>
       {/**sign in with apple */}
       <View style={styles.button}>
-        <AppButton title="Apple" type="secondary" />
+        <AppButton
+          title="Apple"
+          hasIcon
+          icon={
+            <MaterialCommunityIcons
+              name="apple"
+              size={CONSTANT.f_size.b}
+              color={CONSTANT.color[theme].primary}
+            />
+          }
+          type="secondary"
+        />
       </View>
 
       {/**sign in with google */}
       <View style={styles.button}>
-        <AppButton title="Google" type="secondary" />
+        <AppButton
+          title="Google"
+          hasIcon
+          icon={
+            <MaterialCommunityIcons
+              name="google"
+              size={CONSTANT.f_size.b}
+              color={CONSTANT.color[theme].primary}
+            />
+          }
+          type="secondary"
+        />
       </View>
     </View>
   );

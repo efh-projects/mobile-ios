@@ -37,15 +37,15 @@ const SuccessCard = ({
   const _onPress = DEBOUNCE(() => {
     onPress();
 
+    if (dismissByCount && router.canDismiss()) {
+      router.dismiss(dismissCount);
+    }
+
     if (!path) return;
 
     if (dismissAll && router.canDismiss()) {
       router.dismissTo(path);
       return;
-    }
-
-    if (dismissByCount && router.canDismiss()) {
-      router.dismiss(dismissCount);
     }
 
     if (pushRoute) {

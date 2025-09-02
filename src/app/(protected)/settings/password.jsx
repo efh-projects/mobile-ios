@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
-import { SuccessCard } from "../../components/card";
-import { AppButton, FormInput } from "../../components/reuseable";
-import { SafeAreaWrapper, ScrollWrapper } from "../../components/wrapper";
-import { CONSTANT, DEBOUNCE } from "../../utils";
+import { SuccessCard } from "../../../components/card";
+import { AppButton, FormInput } from "../../../components/reuseable";
+import { SafeAreaWrapper, ScrollWrapper } from "../../../components/wrapper";
+import { CONSTANT, DEBOUNCE } from "../../../utils";
 
-export default function NewPassword() {
+export default function UpdatePassword() {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     block: {
@@ -18,18 +18,19 @@ export default function NewPassword() {
 
   //--
   const [form, setForm] = useState({
+    pass: "",
     new_pass: "",
     confirm_pass: "",
   });
 
-  const [createPassIsSuccessful, setCreatePassIsSuccessful] = useState(false);
+  const [updatePassIsSuccessful, setUpdatePassIsSuccessful] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-  const _createPass = DEBOUNCE(async () => {
+  const _updatePass = DEBOUNCE(async () => {
     const res = true;
 
     if (res) {
-      setCreatePassIsSuccessful(true);
+      setUpdatePassIsSuccessful(true);
     }
   });
 
@@ -37,6 +38,16 @@ export default function NewPassword() {
     <SafeAreaWrapper showHeader={true}>
       <ScrollWrapper>
         <View style={styles.block}>
+          <FormInput
+            label="Current Password"
+            placeholder="What is your current password?"
+            icon={CONSTANT.icon.lock}
+            mode={CONSTANT.input_mode.password}
+            form={form}
+            setForm={setForm}
+            name={"pass"}
+          />
+
           <FormInput
             label="New Password"
             placeholder="Create a new password"
@@ -59,20 +70,20 @@ export default function NewPassword() {
         </View>
 
         <AppButton
-          title="Create Password"
-          onPress={_createPass}
+          title="Update Password"
+          onPress={_updatePass}
           isLoading={isLoading}
         />
       </ScrollWrapper>
 
       {/**create pass success */}
       <SuccessCard
-        isSuccessful={createPassIsSuccessful}
-        setIsSuccessful={setCreatePassIsSuccessful}
-        path={"/auth/"}
-        dismissAll
-        title="Create Password Successful"
-        description="Your new password has been created successfully. Continue to sign in."
+        isSuccessful={updatePassIsSuccessful}
+        setIsSuccessful={setUpdatePassIsSuccessful}
+        dismissByCount={true}
+        dismissCount={1}
+        title="Update Password Successful"
+        description="Your password has been updated successfully. For your acocunt safety, do not share this with anybody."
         buttonTitle="Continue"
       />
     </SafeAreaWrapper>

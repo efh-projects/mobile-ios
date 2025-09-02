@@ -8,6 +8,8 @@ import CustomText from "./CustomText";
 const FormInput = ({
   type = "text",
   mode,
+  disabled,
+  value,
   label,
   placeholder,
   icon,
@@ -23,6 +25,8 @@ const FormInput = ({
           placeholder={placeholder}
           icon={icon}
           mode={mode}
+          disabled={disabled}
+          value={value}
           form={form}
           name={name}
           setForm={setForm}
@@ -39,6 +43,8 @@ const FormInputText = ({
   placeholder = "Type here",
   icon = "info",
   mode = "text",
+  disabled = false,
+  value,
   form = {},
   name = "",
   setForm = () => {},
@@ -77,7 +83,7 @@ const FormInputText = ({
     },
   });
 
-  const value = Boolean(name) ? form[name] : "";
+  const formValue = Boolean(name) ? form[name] : "";
   const isPassword = Boolean(mode === CONSTANT.input_mode.password);
 
   const [isTyping, setIsTyping] = useState(false);
@@ -113,7 +119,7 @@ const FormInputText = ({
             name={icon}
             size={CONSTANT.f_size.b}
             color={
-              value
+              formValue
                 ? CONSTANT.color[theme].primary
                 : CONSTANT.color[theme].gray100
             }
@@ -125,13 +131,14 @@ const FormInputText = ({
           placeholderTextColor={CONSTANT.color[theme].gray100}
           inputMode={mode}
           style={styles.input}
-          value={value}
+          value={value || formValue}
           secureTextEntry={isPassword ? isHidden : false}
           onChangeText={(text) =>
             setForm((prev) => ({ ...prev, [name]: String(text) }))
           }
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
+          editable={!disabled}
         />
 
         {Boolean(isPassword) && (

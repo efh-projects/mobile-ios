@@ -49,6 +49,7 @@ const CONSTANT = {
     log_out: "log-out",
     credit_card: "credit-card",
     clipboard: "clipboard",
+    copy: "copy",
     book_open: "book-open",
     headphones: "headphones",
     archive: "archive",
@@ -68,6 +69,8 @@ const CONSTANT = {
   pages: {
     verify: "Verification",
     "new-password": "Create New Password",
+    "settings/password": "Password & Security",
+    "settings/profile": "Change Profile Information",
   },
 };
 
