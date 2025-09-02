@@ -9,6 +9,7 @@ import {
   FormInput,
   TextLink,
 } from "../../components/reuseable";
+import TermsPolicyModal from "../../components/TermsPolicyModal";
 import { PopupModalWrapper, SafeAreaWrapper } from "../../components/wrapper";
 import { CONSTANT, DEBOUNCE } from "../../utils";
 
@@ -237,7 +238,7 @@ const SignInModal = ({
       <AppButton title="Sign In" onPress={_signIn} isLoading={isLoading} />
 
       {/**terms modal */}
-      <TermsModal />
+      <TermsPolicyModal />
     </PopupModalWrapper>
   );
 };
@@ -339,7 +340,7 @@ const SignUpModal = ({
       <AppButton title="Sign Up" onPress={_signUp} isLoading={isLoading} />
 
       {/**terms modal */}
-      <TermsModal />
+      <TermsPolicyModal />
     </PopupModalWrapper>
   );
 };
@@ -394,36 +395,5 @@ const ForgotPasswordModal = ({
         isLoading={isLoading}
       />
     </PopupModalWrapper>
-  );
-};
-
-const TermsModal = ({}) => {
-  const theme = useSelector((state) => state.app.theme);
-  const styles = StyleSheet.create({
-    component: {
-      width: "100%",
-      padding: CONSTANT.dimension.m,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
-
-  //--
-  const [isVisible, setIsVisible] = useState(false);
-
-  return (
-    <>
-      <View style={styles.component}>
-        <CustomText center>
-          By continuing, you agree to our{" "}
-          <TextLink text="Terms Of Use" onPress={() => setIsVisible(true)} />
-        </CustomText>
-      </View>
-
-      <PopupModalWrapper
-        isVisible={isVisible}
-        setIsVisible={setIsVisible}
-      ></PopupModalWrapper>
-    </>
   );
 };
