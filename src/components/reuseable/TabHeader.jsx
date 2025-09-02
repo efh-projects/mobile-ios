@@ -12,6 +12,7 @@ const TabHeader = ({ title = "Title" }) => {
       height: 54,
       alignItems: "center",
       justifyContent: "center",
+      backgroundColor: CONSTANT.color[theme].white,
       borderBottomWidth: 0.5,
       borderBottomColor: CONSTANT.color[theme].gray50,
     },

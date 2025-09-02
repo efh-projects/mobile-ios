@@ -21,11 +21,15 @@ const AppButton = ({
 
   //--
   const bgColor =
-    type === "secondary" ? "transparent" : type === "error" ? CONSTANT.color[theme].error : CONSTANT.color[theme].primary;
+    type === "secondary"
+      ? "transparent"
+      : type === "error"
+      ? CONSTANT.color[theme].error
+      : CONSTANT.color[theme].primary;
   const txtColor =
     type === "secondary"
       ? CONSTANT.color[theme].primary
-      : CONSTANT.color[theme].white;
+      : CONSTANT.color.fixed.white;
   const bdColor =
     type === "secondary" ? CONSTANT.color[theme].primary : "transparent";
 

@@ -7,6 +7,7 @@ const CustomText = ({
   children,
   style,
   type = "p",
+  numberOfLines = 0,
   center = false,
   right = false,
 }) => {
@@ -37,7 +38,14 @@ const CustomText = ({
     },
   });
 
-  return <Text style={[styles[type], styles.position, style]}>{children}</Text>;
+  return (
+    <Text
+      style={[styles[type], styles.position, style]}
+      numberOfLines={numberOfLines}
+    >
+      {children}
+    </Text>
+  );
 };
 
 export default memo(CustomText);

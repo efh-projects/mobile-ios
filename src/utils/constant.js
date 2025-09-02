@@ -38,6 +38,7 @@ const CONSTANT = {
   icon: {
     user: "user",
     mail: "mail",
+    moon: "moon",
     lock: "lock",
     eye: "eye",
     eye_off: "eye-off",
@@ -45,6 +46,7 @@ const CONSTANT = {
     check: "check",
     bell: "bell",
     plus: "plus",
+    minus: "minus",
     trash: "trash",
     log_out: "log-out",
     credit_card: "credit-card",
@@ -71,6 +73,7 @@ const CONSTANT = {
     "new-password": "Create New Password",
     "settings/password": "Password & Security",
     "settings/profile": "Change Profile Information",
+    "settings/support": "Contact Support",
   },
 };
 

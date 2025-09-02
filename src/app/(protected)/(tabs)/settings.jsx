@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import {
   AppButton,
@@ -11,26 +11,20 @@ import {
 } from "../../../components/reuseable";
 import TermsPolicyModal from "../../../components/TermsPolicyModal";
 import { PopupModalWrapper, ScrollWrapper } from "../../../components/wrapper";
-import { CONSTANT } from "../../../utils";
+import { CONSTANT, DEBOUNCE, REQUESTS } from "../../../utils";
 
 export default function Settings() {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     page: {
-      flex: 1,
-      backgroundColor: CONSTANT.color[theme].white,
-    },
-    scroll: {
       paddingBottom: CONSTANT.dimension.xxb * 3,
       gap: CONSTANT.dimension.b,
     },
     section: {
       width: "100%",
-      paddingVertical: CONSTANT.dimension.s,
-      paddingHorizontal: CONSTANT.dimension.m,
+      gap: CONSTANT.dimension.xxs,
       borderRadius: CONSTANT.dimension.m,
-      borderWidth: 0.8,
-      borderColor: CONSTANT.color[theme].gray50,
+      overflow: "hidden",
     },
   });
 
@@ -38,13 +32,18 @@ export default function Settings() {
   const [signOutVisible, setSignOutVisible] = useState(false);
   const [deleteAccountVisible, setDeleteAccountVisible] = useState(false);
 
+  //--
+  const _switchTheme = DEBOUNCE(async () => {
+    await REQUESTS.switchTheme();
+  });
+
   return (
-    <View style={styles.page}>
+    <>
       <TabHeader title="Settings" />
 
-      <ScrollWrapper containerStyle={styles.scroll}>
-        <ProfileComponent />
+      <ProfileComponent />
 
+      <ScrollWrapper containerStyle={styles.page}>
         {/** */}
         <View style={styles.section}>
           <OptionComponent
@@ -68,6 +67,14 @@ export default function Settings() {
           <OptionComponent
             title="Contact Support"
             icon={CONSTANT.icon.headphones}
+            path={"/settings/support/"}
+          />
+          <OptionComponent
+            title="Dark Theme"
+            icon={CONSTANT.icon.moon}
+            hasSwitch
+            switchValue={Boolean(theme === "dark")}
+            onSwitch={_switchTheme}
           />
         </View>
 
@@ -101,7 +108,7 @@ export default function Settings() {
         isVisible={deleteAccountVisible}
         setIsVisible={setDeleteAccountVisible}
       />
-    </View>
+    </>
   );
 }
 
@@ -110,9 +117,11 @@ const ProfileComponent = ({}) => {
   const styles = StyleSheet.create({
     component: {
       paddingVertical: CONSTANT.dimension.xxb,
+      paddingHorizontal: CONSTANT.dimension.m,
       alignItems: "center",
       justifyContent: "center",
       gap: CONSTANT.dimension.b,
+      backgroundColor: CONSTANT.color[theme].white,
     },
     user: {
       gap: CONSTANT.dimension.xs,
@@ -147,6 +156,9 @@ const OptionComponent = ({
   title = "",
   icon = "",
   danger = false,
+  hasSwitch = false,
+  switchValue = false,
+  onSwitch = () => {},
   onPress = () => {},
   path,
 }) => {
@@ -155,9 +167,17 @@ const OptionComponent = ({
     component: {
       width: "100%",
       height: 48,
+      paddingHorizontal: CONSTANT.dimension.m,
       flexDirection: "row",
       alignItems: "center",
       gap: CONSTANT.dimension.m,
+      backgroundColor: CONSTANT.color[theme].white,
+    },
+    switch: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
     },
   });
 
@@ -174,6 +194,7 @@ const OptionComponent = ({
       activeOpacity={0.6}
       style={styles.component}
       onPress={_onPress}
+      disabled={hasSwitch}
     >
       <Feather
         name={icon || "info"}
@@ -188,6 +209,26 @@ const OptionComponent = ({
       >
         {title}
       </CustomText>
+
+      {hasSwitch && (
+        <View style={styles.switch}>
+          <Switch
+            thumbColor={
+              Boolean(switchValue)
+                ? CONSTANT.color[theme].primary
+                : CONSTANT.color[theme].white
+            }
+            trackColor={
+              Boolean(switchValue)
+                ? CONSTANT.color[theme].primaryFaded
+                : CONSTANT.color[theme].gray50
+            }
+            ios_backgroundColor={CONSTANT.color[theme].gray50}
+            value={switchValue}
+            onValueChange={onSwitch}
+          />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -198,8 +239,14 @@ const SignOutModal = ({ isVisible, setIsVisible = () => {} }) => {
 
   return (
     <>
-      <PopupModalWrapper isVisible={isVisible} setIsVisible={setIsVisible} showBackDrop={true}>
-        <CustomText type="h3" center>Sign Out</CustomText>
+      <PopupModalWrapper
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        showBackDrop={true}
+      >
+        <CustomText type="h3" center>
+          Sign Out
+        </CustomText>
         <CustomText type="p" center>
           Doing this will erase your current session on this device. Meaning you
           will be required to sign back in to access the app. Are you sure you
@@ -223,10 +270,17 @@ const DeleteAccountModal = ({ isVisible, setIsVisible = () => {} }) => {
         setIsVisible={setIsVisible}
         showBackDrop={true}
       >
-        <CustomText type="h3" style={{color: CONSTANT.color[theme].error}} center>Warning, Delete Account</CustomText>
+        <CustomText
+          type="h3"
+          style={{ color: CONSTANT.color[theme].error }}
+          center
+        >
+          Warning, Delete Account
+        </CustomText>
         <CustomText type="p" center>
-          This action can not be undone. Once you proceed, all your personal data and information will be deleted from our records permanently. Are you sure you
-          want to delete your account?
+          This action can not be undone. Once you proceed, all your personal
+          data and information will be deleted from our records permanently. Are
+          you sure you want to delete your account?
         </CustomText>
 
         <AppButton title="Yes, Delete Account" type={"error"} />
