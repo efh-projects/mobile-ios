@@ -38,11 +38,27 @@ const CONSTANT = {
   icon: {
     user: "user",
     mail: "mail",
+    moon: "moon",
     lock: "lock",
     eye: "eye",
     eye_off: "eye-off",
     shield: "shield",
     check: "check",
+    bell: "bell",
+    plus: "plus",
+    minus: "minus",
+    trash: "trash",
+    log_out: "log-out",
+    credit_card: "credit-card",
+    clipboard: "clipboard",
+    copy: "copy",
+    book_open: "book-open",
+    headphones: "headphones",
+    archive: "archive",
+    bar_chart: "bar-chart",
+    chevron_right: "chevron-right",
+    chevron_left: "chevron-left",
+    settings: "settings",
     back: Platform.OS === "ios" ? "chevron-left" : "arrow-left",
   },
   input_mode: {
@@ -55,6 +71,9 @@ const CONSTANT = {
   pages: {
     verify: "Verification",
     "new-password": "Create New Password",
+    "settings/password": "Password & Security",
+    "settings/profile": "Change Profile Information",
+    "settings/support": "Contact Support",
   },
 };
 

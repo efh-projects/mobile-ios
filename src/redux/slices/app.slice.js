@@ -4,14 +4,30 @@ const initialState = {
   name: "App Name",
   theme: "light",
   color: {
+    fixed: {
+      white: "#FDFDFD",
+      black: "#08010a",
+    },
     light: {
       white: "#FDFDFD",
-      black: "#111827",
+      black: "#08010a",
       primary: "#981bbf",
       primaryFaded: "rgba(152, 27, 191, 0.15)",
       gray50: "#E5E7EB", //d1c9cf
-      gray100: "#a79eb4", //a79eb4
-      gray200: "#454545", //241b21
+      gray100: "#a8a6af", //a79eb4
+      gray200: "#353535", //241b21
+      success: "#10B981",
+      error: "#EF4444",
+      warning: "#F59E0B",
+    },
+    dark: {
+      white: "#121212",
+      black: "#F9FAFB",
+      primary: "#981bbf",
+      primaryFaded: "rgba(152, 27, 191, 0.15)",
+      gray50: "#1d1d24", //1F2937
+      gray100: "#4B5563",
+      gray200: "#a8a6af",
       success: "#10B981",
       error: "#EF4444",
       warning: "#F59E0B",

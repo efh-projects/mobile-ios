@@ -15,17 +15,21 @@ const AppButton = ({
   isDisabled = false,
   hasIcon = false,
   icon = <></>,
-  type = "primary", //primary, secondary
+  type = "primary", //primary, secondary, error
 }) => {
   const theme = useSelector((state) => state.app.theme);
 
   //--
   const bgColor =
-    type === "secondary" ? "transparent" : CONSTANT.color[theme].primary;
+    type === "secondary"
+      ? "transparent"
+      : type === "error"
+      ? CONSTANT.color[theme].error
+      : CONSTANT.color[theme].primary;
   const txtColor =
     type === "secondary"
       ? CONSTANT.color[theme].primary
-      : CONSTANT.color[theme].white;
+      : CONSTANT.color.fixed.white;
   const bdColor =
     type === "secondary" ? CONSTANT.color[theme].primary : "transparent";
 
@@ -36,7 +40,7 @@ const AppButton = ({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      gap: CONSTANT.dimension.s,
+      gap: CONSTANT.dimension.xs,
       borderRadius: CONSTANT.dimension.round,
       backgroundColor: bgColor,
       borderWidth: type === "secondary" ? 0.8 : 0,

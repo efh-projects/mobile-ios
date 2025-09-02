@@ -19,7 +19,6 @@ const ScrollWrapper = ({
       minHeight: "100%",
       padding: CONSTANT.dimension.m,
       paddingBottom: keyboardHeight,
-      flex: 1,
       gap: CONSTANT.dimension.m,
     },
   });

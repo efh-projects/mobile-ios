@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -9,6 +10,7 @@ import {
   FormInput,
   TextLink,
 } from "../../components/reuseable";
+import TermsPolicyModal from "../../components/TermsPolicyModal";
 import { PopupModalWrapper, SafeAreaWrapper } from "../../components/wrapper";
 import { CONSTANT, DEBOUNCE } from "../../utils";
 
@@ -151,12 +153,34 @@ const OAuthComponent = ({}) => {
     <View style={styles.oauthTab}>
       {/**sign in with apple */}
       <View style={styles.button}>
-        <AppButton title="Apple" type="secondary" />
+        <AppButton
+          title="Apple"
+          hasIcon
+          icon={
+            <MaterialCommunityIcons
+              name="apple"
+              size={CONSTANT.f_size.b}
+              color={CONSTANT.color[theme].primary}
+            />
+          }
+          type="secondary"
+        />
       </View>
 
       {/**sign in with google */}
       <View style={styles.button}>
-        <AppButton title="Google" type="secondary" />
+        <AppButton
+          title="Google"
+          hasIcon
+          icon={
+            <MaterialCommunityIcons
+              name="google"
+              size={CONSTANT.f_size.b}
+              color={CONSTANT.color[theme].primary}
+            />
+          }
+          type="secondary"
+        />
       </View>
     </View>
   );
@@ -237,7 +261,7 @@ const SignInModal = ({
       <AppButton title="Sign In" onPress={_signIn} isLoading={isLoading} />
 
       {/**terms modal */}
-      <TermsModal />
+      <TermsPolicyModal />
     </PopupModalWrapper>
   );
 };
@@ -339,7 +363,7 @@ const SignUpModal = ({
       <AppButton title="Sign Up" onPress={_signUp} isLoading={isLoading} />
 
       {/**terms modal */}
-      <TermsModal />
+      <TermsPolicyModal />
     </PopupModalWrapper>
   );
 };
@@ -394,36 +418,5 @@ const ForgotPasswordModal = ({
         isLoading={isLoading}
       />
     </PopupModalWrapper>
-  );
-};
-
-const TermsModal = ({}) => {
-  const theme = useSelector((state) => state.app.theme);
-  const styles = StyleSheet.create({
-    component: {
-      width: "100%",
-      padding: CONSTANT.dimension.m,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
-
-  //--
-  const [isVisible, setIsVisible] = useState(false);
-
-  return (
-    <>
-      <View style={styles.component}>
-        <CustomText center>
-          By continuing, you agree to our{" "}
-          <TextLink text="Terms Of Use" onPress={() => setIsVisible(true)} />
-        </CustomText>
-      </View>
-
-      <PopupModalWrapper
-        isVisible={isVisible}
-        setIsVisible={setIsVisible}
-      ></PopupModalWrapper>
-    </>
   );
 };

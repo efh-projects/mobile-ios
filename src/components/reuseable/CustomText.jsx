@@ -7,6 +7,7 @@ const CustomText = ({
   children,
   style,
   type = "p",
+  numberOfLines = 0,
   center = false,
   right = false,
 }) => {
@@ -20,6 +21,11 @@ const CustomText = ({
       fontWeight: CONSTANT.f_weight.regular,
       color: CONSTANT.color[theme].gray100,
     },
+    h5: {
+      fontSize: CONSTANT.f_size.s,
+      fontWeight: CONSTANT.f_weight.semibold,
+      color: CONSTANT.color[theme].gray200,
+    },
     h4: {
       fontSize: CONSTANT.f_size.m,
       fontWeight: CONSTANT.f_weight.semibold,
@@ -32,7 +38,14 @@ const CustomText = ({
     },
   });
 
-  return <Text style={[styles[type], styles.position, style]}>{children}</Text>;
+  return (
+    <Text
+      style={[styles[type], styles.position, style]}
+      numberOfLines={numberOfLines}
+    >
+      {children}
+    </Text>
+  );
 };
 
 export default memo(CustomText);
