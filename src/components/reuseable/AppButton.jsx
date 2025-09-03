@@ -15,7 +15,7 @@ const AppButton = ({
   isDisabled = false,
   hasIcon = false,
   icon = <></>,
-  type = "primary", //primary, secondary, error
+  type = "primary", // primary, secondary, error, success
 }) => {
   const theme = useSelector((state) => state.app.theme);
 
@@ -25,6 +25,8 @@ const AppButton = ({
       ? "transparent"
       : type === "error"
       ? CONSTANT.color[theme].error
+      : type === "success"
+      ? CONSTANT.color[theme].success
       : CONSTANT.color[theme].primary;
   const txtColor =
     type === "secondary"

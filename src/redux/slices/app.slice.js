@@ -13,11 +13,13 @@ const initialState = {
       black: "#08010a",
       primary: "#981bbf",
       primaryFaded: "rgba(152, 27, 191, 0.15)",
-      gray50: "#E5E7EB", //d1c9cf
+      gray50: "#F6F6F6", //E5E7EB
       gray100: "#a8a6af", //a79eb4
       gray200: "#353535", //241b21
       success: "#10B981",
+      successFaded: "rgba(16, 185, 129, 0.15)",
       error: "#EF4444",
+      errorFaded: "rgba(239, 68, 68, 0.15)",
       warning: "#F59E0B",
     },
     dark: {
@@ -29,7 +31,9 @@ const initialState = {
       gray100: "#4B5563",
       gray200: "#a8a6af",
       success: "#10B981",
+      successFaded: "rgba(16, 185, 129, 0.15)",
       error: "#EF4444",
+      errorFaded: "rgba(239, 68, 68, 0.15)",
       warning: "#F59E0B",
     },
   },
