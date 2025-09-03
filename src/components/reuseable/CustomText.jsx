@@ -16,6 +16,11 @@ const CustomText = ({
     position: {
       textAlign: center ? "center" : right ? "right" : "left",
     },
+    sp: {
+      fontSize: CONSTANT.f_size.xs,
+      fontWeight: CONSTANT.f_weight.regular,
+      color: CONSTANT.color[theme].gray100,
+    },
     p: {
       fontSize: CONSTANT.f_size.s,
       fontWeight: CONSTANT.f_weight.regular,

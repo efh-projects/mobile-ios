@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import {
   AppButton,
   CustomText,
+  IconCard,
   TabHeader,
   ThumbnailPicker,
 } from "../../../components/reuseable";
@@ -17,7 +18,7 @@ export default function Settings() {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     page: {
-      paddingBottom: CONSTANT.dimension.xxb * 3,
+      paddingBottom: CONSTANT.dimension.xxb,
       gap: CONSTANT.dimension.b,
     },
     section: {
@@ -235,7 +236,18 @@ const OptionComponent = ({
 
 const SignOutModal = ({ isVisible, setIsVisible = () => {} }) => {
   const theme = useSelector((state) => state.app.theme);
-  const styles = StyleSheet.create({});
+  const styles = StyleSheet.create({
+    modal: {
+      gap: CONSTANT.dimension.xxb,
+      paddingVertical: CONSTANT.dimension.b,
+    },
+    section: {
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: CONSTANT.dimension.m,
+    },
+  });
 
   return (
     <>
@@ -243,17 +255,24 @@ const SignOutModal = ({ isVisible, setIsVisible = () => {} }) => {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         showBackDrop={true}
+        containerStyle={styles.modal}
       >
-        <CustomText type="h3" center>
-          Sign Out
-        </CustomText>
-        <CustomText type="p" center>
-          Doing this will erase your current session on this device. Meaning you
-          will be required to sign back in to access the app. Are you sure you
-          want to sign out?
-        </CustomText>
+        <View style={styles.section}>
+          <IconCard icon={CONSTANT.icon.log_out} />
+        </View>
 
-        <AppButton title="Yes, Sign Out" />
+        <View style={styles.section}>
+          <CustomText type="h3" center>
+            Sign Out
+          </CustomText>
+          <CustomText center>
+            Doing this will erase your current session on this device. Meaning
+            you will be required to sign back in to access the app. Are you sure
+            you want to sign out?
+          </CustomText>
+        </View>
+
+        <AppButton title={"Yes, Sign Out"} />
       </PopupModalWrapper>
     </>
   );
@@ -261,7 +280,18 @@ const SignOutModal = ({ isVisible, setIsVisible = () => {} }) => {
 
 const DeleteAccountModal = ({ isVisible, setIsVisible = () => {} }) => {
   const theme = useSelector((state) => state.app.theme);
-  const styles = StyleSheet.create({});
+  const styles = StyleSheet.create({
+    modal: {
+      gap: CONSTANT.dimension.xxb,
+      paddingVertical: CONSTANT.dimension.b,
+    },
+    section: {
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: CONSTANT.dimension.m,
+    },
+  });
 
   return (
     <>
@@ -269,19 +299,22 @@ const DeleteAccountModal = ({ isVisible, setIsVisible = () => {} }) => {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         showBackDrop={true}
+        containerStyle={styles.modal}
       >
-        <CustomText
-          type="h3"
-          style={{ color: CONSTANT.color[theme].error }}
-          center
-        >
-          Warning, Delete Account
-        </CustomText>
-        <CustomText type="p" center>
-          This action can not be undone. Once you proceed, all your personal
-          data and information will be deleted from our records permanently. Are
-          you sure you want to delete your account?
-        </CustomText>
+        <View style={styles.section}>
+          <IconCard icon={CONSTANT.icon.log_out} error />
+        </View>
+
+        <View style={styles.section}>
+          <CustomText type="h3" center>
+            Warning, Delete Account
+          </CustomText>
+          <CustomText center>
+            This action can not be undone. Once you proceed, all your personal
+            data and information will be deleted from our records permanently.
+            Are you sure you want to delete your account?
+          </CustomText>
+        </View>
 
         <AppButton title="Yes, Delete Account" type={"error"} />
       </PopupModalWrapper>

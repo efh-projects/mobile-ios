@@ -67,7 +67,7 @@ const SuccessCard = ({
         containerStyle={styles.modal}
       >
         <View style={styles.section}>
-          <IconCard icon={CONSTANT.icon.check} />
+          <IconCard icon={CONSTANT.icon.check} success />
         </View>
 
         <View style={styles.section}>
@@ -77,7 +77,7 @@ const SuccessCard = ({
           <CustomText center>{description}</CustomText>
         </View>
 
-        <AppButton title={buttonTitle} onPress={_onPress} />
+        <AppButton title={buttonTitle} onPress={_onPress} type="success" />
       </PopupModalWrapper>
     </>
   );

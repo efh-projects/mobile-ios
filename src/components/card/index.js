@@ -1,3 +1,4 @@
 import SuccessCard from "./SuccessCard";
+import TransactionCard from "./TransactionCard";
 
-export { SuccessCard };
+export { SuccessCard, TransactionCard };

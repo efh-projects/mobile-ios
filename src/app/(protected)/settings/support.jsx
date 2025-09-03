@@ -1,14 +1,15 @@
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { CustomText } from "../../../components/reuseable";
+import { CustomText, NotFound } from "../../../components/reuseable";
 import {
+  ListWrapper,
   PopupModalWrapper,
   SafeAreaWrapper,
   ScrollWrapper,
 } from "../../../components/wrapper";
-import { CONSTANT } from "../../../utils";
+import { CONSTANT, DEBOUNCE } from "../../../utils";
 
 export default function ContactSupport() {
   const theme = useSelector((state) => state.app.theme);
@@ -20,7 +21,31 @@ export default function ContactSupport() {
       width: "100%",
       gap: CONSTANT.dimension.m,
     },
+    content: {
+      paddingTop: CONSTANT.dimension.b,
+    },
   });
+
+  //--handle faqs
+  const [faqs, setFaqs] = useState();
+  const [meta, setMeta] = useState();
+
+  const [faqsLoading, setFaqsLoading] = useState(false);
+  const _fetchFaqs = DEBOUNCE(async (page) => {
+    return new Promise((resolve) => {
+      setFaqsLoading(true);
+      setTimeout(() => {
+        setFaqs(["1", "2", "3"]);
+        setMeta({ has_next_page: false, page: 1 });
+        setFaqsLoading(false);
+        resolve();
+      }, 3000);
+    });
+  });
+
+  useEffect(() => {
+    _fetchFaqs(1);
+  }, []);
 
   return (
     <SafeAreaWrapper showHeader={true}>
@@ -43,8 +68,29 @@ export default function ContactSupport() {
           </CustomText>
 
           {/**faq list */}
-          <View>
-            <FaqComponent />
+          <View style={styles.content}>
+            <ListWrapper
+              data={faqs}
+              renderItem={({ item }) => <FaqComponent data={item} />}
+              keyExtractor={(item, index) => item.id || index.toString()}
+              refreshFunc={() => {
+                _fetchFaqs(1);
+              }}
+              canLoadMore={Boolean(meta && meta?.has_next_page)}
+              loadMoreFunc={() => {
+                _fetchFaqs(Number(meta?.page + 1));
+              }}
+              isLoading={faqsLoading}
+              ListEmptyComponent={
+                <NotFound
+                  text={"No FAQs available"}
+                  loaderType="faq"
+                  isLoading={faqsLoading}
+                />
+              }
+              gapSize={CONSTANT.dimension.b}
+              paddingHorizontal={0}
+            />
           </View>
         </View>
       </ScrollWrapper>
@@ -80,7 +126,7 @@ const FaqComponent = ({ data = {} }) => {
       >
         <View style={styles.title}>
           <CustomText type="h4" numberOfLines={1}>
-            How to delete your account
+            - How to delete your account
           </CustomText>
         </View>
 

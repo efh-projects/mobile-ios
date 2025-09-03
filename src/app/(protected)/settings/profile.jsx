@@ -1,14 +1,27 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { SuccessCard } from "../../../components/card";
-import { AppButton, FormInput } from "../../../components/reuseable";
+import {
+  AppButton,
+  CustomText,
+  FormInput,
+} from "../../../components/reuseable";
 import { SafeAreaWrapper, ScrollWrapper } from "../../../components/wrapper";
 import { CONSTANT, DEBOUNCE } from "../../../utils";
 
 export default function UpdateProfile() {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
+    info: {
+      width: "100%",
+      padding: CONSTANT.dimension.m,
+      marginBottom: CONSTANT.dimension.xxb,
+      gap: CONSTANT.dimension.m,
+      borderRadius: CONSTANT.dimension.xs,
+      borderWidth: 0.8,
+      borderColor: CONSTANT.color[theme].gray50,
+    },
     block: {
       width: "100%",
       gap: CONSTANT.dimension.m,
@@ -37,15 +50,23 @@ export default function UpdateProfile() {
   return (
     <SafeAreaWrapper showHeader={true}>
       <ScrollWrapper>
+        {/**brief info */}
+        <View style={styles.info}>
+          <SubComponent name="User ID" value="uid-8492589284502" />
+          <SubComponent name="Email Address" value="thomasrain@gmail.com" />
+          <SubComponent name="Joined Since" value="23 June, 2024" />
+          <SubComponent name="Last Updated On" value="5 August, 2025" />
+        </View>
+
         <View style={styles.block}>
-          <FormInput
+          {/* <FormInput
             label="Email Address"
             placeholder="youremail@example.com"
             icon={CONSTANT.icon.mail}
             mode={CONSTANT.input_mode.email}
             value={"thomasrain@gmail.com"}
             disabled
-          />
+          /> */}
 
           <FormInput
             label="What's Your Legal Name?"
@@ -88,3 +109,36 @@ export default function UpdateProfile() {
     </SafeAreaWrapper>
   );
 }
+
+const SubComponent = ({ name = "Option", value = "This is the value" }) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    component: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+      gap: CONSTANT.dimension.m,
+    },
+    name: {
+      width: 120,
+    },
+    value: {
+      flex: 1,
+    },
+  });
+
+  return (
+    <View style={styles.component}>
+      <CustomText type="h5" style={styles.name}>
+        {name}
+      </CustomText>
+
+      <TouchableOpacity style={styles.value}>
+        <CustomText type="p" right>
+          {value}
+        </CustomText>
+      </TouchableOpacity>
+    </View>
+  );
+};
