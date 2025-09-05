@@ -39,6 +39,10 @@ const NotFound = ({
               dummyArr?.map((item, index) => <TransactionLoader key={index} />)
             ) : Boolean(loaderType === "package") ? (
               dummyArr?.map((item, index) => <PackageLoader key={index} />)
+            ) : Boolean(loaderType === "package-transaction") ? (
+              dummyArr?.map((item, index) => (
+                <PackageTransactionLoader key={index} />
+              ))
             ) : (
               <ActivityIndicator
                 size={CONSTANT.dimension.m}
@@ -189,6 +193,46 @@ const PackageLoader = () => {
     <View style={styles.split}>
       <SingleItem />
       <SingleItem />
+    </View>
+  );
+};
+
+const PackageTransactionLoader = () => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    component: {
+      width: "100%",
+      paddingVertical: CONSTANT.dimension.xxs,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: CONSTANT.dimension.m,
+    },
+    split: {
+      flex: 1,
+    },
+    text: {
+      height: CONSTANT.dimension.xs,
+      backgroundColor: CONSTANT.color[theme].gray50,
+      borderRadius: CONSTANT.dimension.s,
+    },
+  });
+
+  return (
+    <View style={styles.component}>
+      <View style={styles.split}>
+        <View style={[styles.text, { width: "70%" }]} />
+      </View>
+
+      <View style={styles.split}>
+        <View
+          style={[styles.text, { width: "60%", marginHorizontal: "auto" }]}
+        />
+      </View>
+
+      <View style={styles.split}>
+        <View style={[styles.text, { width: "80%", marginLeft: "auto" }]} />
+      </View>
     </View>
   );
 };

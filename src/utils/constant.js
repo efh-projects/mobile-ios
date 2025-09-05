@@ -49,6 +49,7 @@ const CONSTANT = {
     shield: "shield",
     check: "check",
     bell: "bell",
+    x: "x",
     plus: "plus",
     minus: "minus",
     trash: "trash",
