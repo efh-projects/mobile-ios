@@ -9,13 +9,13 @@ const PhotoPicker = ({ photo = {}, setPhoto = () => {} }) => {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     thumbnail: {
-      width: CONSTANT.dimension.set(180),
+      width: CONSTANT.dimension.set(200),
       marginHorizontal: "auto",
       gap: CONSTANT.dimension.xs,
     },
     image: {
       width: "100%",
-      height: CONSTANT.dimension.set(120),
+      height: CONSTANT.dimension.set(200),
       borderRadius: CONSTANT.dimension.xs,
       borderWidth: 0.8,
       borderColor: CONSTANT.color[theme].gray50,
@@ -42,7 +42,7 @@ const PhotoPicker = ({ photo = {}, setPhoto = () => {} }) => {
   return (
     <View style={styles.thumbnail}>
       {/**image */}
-      <View style={styles.image}></View>
+      {photo.uri && <View style={styles.image}></View>}
 
       {/**upload */}
       <TouchableOpacity
@@ -57,7 +57,7 @@ const PhotoPicker = ({ photo = {}, setPhoto = () => {} }) => {
         />
 
         <CustomText type="h5" style={styles.pickerText}>
-          Select Photo
+          {photo.uri ? "Change" : "Select"} Photo
         </CustomText>
       </TouchableOpacity>
     </View>
