@@ -10,11 +10,23 @@ const CustomText = ({
   numberOfLines = 0,
   center = false,
   right = false,
+  capitalize = false,
+  uppercase = false,
+  lowercase = false,
 }) => {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
-    position: {
+    align: {
       textAlign: center ? "center" : right ? "right" : "left",
+    },
+    transform: {
+      textTransform: uppercase
+        ? "uppercase"
+        : lowercase
+        ? "lowercase"
+        : capitalize
+        ? "capitalize"
+        : "none",
     },
     sp: {
       fontSize: CONSTANT.f_size.xs,
@@ -45,7 +57,7 @@ const CustomText = ({
 
   return (
     <Text
-      style={[styles[type], styles.position, style]}
+      style={[styles[type], styles.align, styles.transform, style]}
       numberOfLines={numberOfLines}
     >
       {children}

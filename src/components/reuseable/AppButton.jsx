@@ -42,7 +42,7 @@ const AppButton = ({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      gap: CONSTANT.dimension.xs,
+      gap: CONSTANT.dimension.xxs,
       borderRadius: CONSTANT.dimension.round,
       backgroundColor: bgColor,
       borderWidth: type === "secondary" ? 0.8 : 0,

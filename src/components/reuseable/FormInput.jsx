@@ -1,6 +1,12 @@
 import { Feather } from "@expo/vector-icons";
 import { memo, useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Switch,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
 import { CONSTANT } from "../../utils";
 import CustomText from "./CustomText";
@@ -8,14 +14,16 @@ import CustomText from "./CustomText";
 const FormInput = ({
   type = "text",
   mode,
-  disabled,
   value,
   label,
   placeholder,
   icon,
   form,
   name,
-  setForm,
+  setForm = () => {},
+  onPress = () => {},
+  disabled = false,
+  danger = false,
 }) => {
   return (
     <>
@@ -25,11 +33,35 @@ const FormInput = ({
           placeholder={placeholder}
           icon={icon}
           mode={mode}
-          disabled={disabled}
           value={value}
           form={form}
           name={name}
           setForm={setForm}
+          disabled={disabled}
+        />
+      )}
+
+      {type === "switch" && (
+        <FormInputSwitch
+          label={label}
+          placeholder={placeholder}
+          icon={icon}
+          value={value}
+          onPress={onPress}
+          disabled={disabled}
+          danger={danger}
+        />
+      )}
+
+      {type === "textarea" && (
+        <FormInputTextarea
+          label={label}
+          placeholder={placeholder}
+          value={value}
+          form={form}
+          name={name}
+          setForm={setForm}
+          disabled={disabled}
         />
       )}
     </>
@@ -43,11 +75,11 @@ const FormInputText = ({
   placeholder = "Type here",
   icon = "info",
   mode = "text",
-  disabled = false,
   value,
   form = {},
   name = "",
   setForm = () => {},
+  disabled = false,
 }) => {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
@@ -98,7 +130,7 @@ const FormInputText = ({
   return (
     <View style={styles.component}>
       {Boolean(label) && (
-        <CustomText type="h4" style={styles.label}>
+        <CustomText type="h5" style={styles.label}>
           {label}
         </CustomText>
       )}
@@ -139,6 +171,7 @@ const FormInputText = ({
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
           editable={!disabled}
+          cursorColor={CONSTANT.color[theme].primary}
         />
 
         {Boolean(isPassword) && (
@@ -153,6 +186,167 @@ const FormInputText = ({
             />
           </TouchableOpacity>
         )}
+      </View>
+    </View>
+  );
+};
+
+const FormInputSwitch = ({
+  label,
+  placeholder,
+  icon,
+  value = false,
+  onPress = () => {},
+  disabled = false,
+  danger = false,
+}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    wrapper: {
+      gap: CONSTANT.dimension.xxs,
+    },
+    component: {
+      width: "100%",
+      height: 38,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: CONSTANT.dimension.m,
+    },
+    label: {
+      color: CONSTANT.color[theme].black,
+    },
+    switch: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+    },
+  });
+
+  const _clickSwitch = () => {
+    if (disabled) return;
+
+    onPress();
+  };
+
+  return (
+    <View style={styles.component}>
+      {icon && (
+        <Feather
+          name={icon || "info"}
+          size={CONSTANT.f_size.b}
+          color={
+            danger ? CONSTANT.color[theme].error : CONSTANT.color[theme].gray200
+          }
+        />
+      )}
+
+      <CustomText type="h5" style={styles.label}>
+        {label}
+      </CustomText>
+
+      <View style={styles.switch}>
+        <Switch
+          thumbColor={
+            Boolean(value)
+              ? CONSTANT.color[theme].primary
+              : CONSTANT.color[theme].white
+          }
+          trackColor={
+            Boolean(value)
+              ? CONSTANT.color[theme].primaryFaded
+              : CONSTANT.color[theme].gray50
+          }
+          ios_backgroundColor={CONSTANT.color[theme].gray50}
+          value={value}
+          onValueChange={_clickSwitch}
+        />
+      </View>
+    </View>
+  );
+};
+
+const FormInputTextarea = ({
+  label = "",
+  placeholder = "Type here",
+  value,
+  form = {},
+  name = "",
+  setForm = () => {},
+  disabled = false,
+}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    component: {
+      width: "100%",
+      gap: CONSTANT.dimension.xs,
+    },
+    label: {
+      color: CONSTANT.color[theme].black,
+    },
+    tab: {
+      width: "100%",
+      height: CONSTANT.dimension.h_ratio(1 / 4),
+      paddingHorizontal: CONSTANT.dimension.m,
+      flexDirection: "row",
+      alignItems: "center",
+      borderRadius: CONSTANT.dimension.s,
+      borderWidth: 0.8,
+    },
+    icon: {
+      width: 24,
+      height: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    input: {
+      height: "100%",
+      flex: 1,
+      fontSize: CONSTANT.f_size.m,
+      fontWeight: CONSTANT.f_weight.regular,
+      color: CONSTANT.color[theme].gray200,
+      textAlignVertical: "top",
+    },
+  });
+
+  const formValue = Boolean(name) ? form[name] : "";
+
+  const [isTyping, setIsTyping] = useState(false);
+
+  return (
+    <View style={styles.component}>
+      {Boolean(label) && (
+        <CustomText type="h5" style={styles.label}>
+          {label}
+        </CustomText>
+      )}
+
+      <View
+        style={[
+          styles.tab,
+          {
+            borderColor: isTyping
+              ? CONSTANT.color[theme].primary
+              : CONSTANT.color[theme].gray50,
+          },
+        ]}
+      >
+        <TextInput
+          placeholder={placeholder}
+          placeholderTextColor={CONSTANT.color[theme].gray100}
+          inputMode={"text"}
+          style={styles.input}
+          value={value || formValue}
+          onChangeText={(text) =>
+            setForm((prev) => ({ ...prev, [name]: String(text) }))
+          }
+          onFocus={() => setIsTyping(true)}
+          onBlur={() => setIsTyping(false)}
+          editable={!disabled}
+          multiline={true}
+          autoCapitalize="none"
+          cursorColor={CONSTANT.color[theme].primary}
+        />
       </View>
     </View>
   );

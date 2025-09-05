@@ -142,6 +142,7 @@ const FaqComponent = ({ data = {} }) => {
         isVisible={faqVisible}
         setIsVisible={setFaqVisible}
         containerStyle={styles.detail}
+        showBackDrop={true}
       >
         <CustomText type="h3">How to delete your account</CustomText>
 
