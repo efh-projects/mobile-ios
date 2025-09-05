@@ -1,6 +1,12 @@
 import { Feather } from "@expo/vector-icons";
 import { memo, useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Switch,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
 import { CONSTANT } from "../../utils";
 import CustomText from "./CustomText";
@@ -8,14 +14,16 @@ import CustomText from "./CustomText";
 const FormInput = ({
   type = "text",
   mode,
-  disabled,
   value,
   label,
   placeholder,
   icon,
   form,
   name,
-  setForm,
+  setForm = () => {},
+  onPress = () => {},
+  disabled = false,
+  danger = false,
 }) => {
   return (
     <>
@@ -30,6 +38,18 @@ const FormInput = ({
           form={form}
           name={name}
           setForm={setForm}
+        />
+      )}
+
+      {type === "switch" && (
+        <FormInputSwitch
+          label={label}
+          placeholder={placeholder}
+          icon={icon}
+          value={value}
+          onPress={onPress}
+          disabled={disabled}
+          danger={danger}
         />
       )}
     </>
@@ -98,7 +118,7 @@ const FormInputText = ({
   return (
     <View style={styles.component}>
       {Boolean(label) && (
-        <CustomText type="h4" style={styles.label}>
+        <CustomText type="h5" style={styles.label}>
           {label}
         </CustomText>
       )}
@@ -153,6 +173,81 @@ const FormInputText = ({
             />
           </TouchableOpacity>
         )}
+      </View>
+    </View>
+  );
+};
+
+const FormInputSwitch = ({
+  label,
+  placeholder,
+  icon,
+  value = false,
+  onPress = () => {},
+  disabled = false,
+  danger = false,
+}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    wrapper: {
+      gap: CONSTANT.dimension.xxs,
+    },
+    component: {
+      width: "100%",
+      height: 38,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: CONSTANT.dimension.m,
+    },
+    label: {
+      color: CONSTANT.color[theme].black,
+    },
+    switch: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+    },
+  });
+
+  const _clickSwitch = () => {
+    if (disabled) return;
+
+    onPress();
+  };
+
+  return (
+    <View style={styles.component}>
+      {icon && (
+        <Feather
+          name={icon || "info"}
+          size={CONSTANT.f_size.b}
+          color={
+            danger ? CONSTANT.color[theme].error : CONSTANT.color[theme].gray200
+          }
+        />
+      )}
+
+      <CustomText type="h5" style={styles.label}>
+        {label}
+      </CustomText>
+
+      <View style={styles.switch}>
+        <Switch
+          thumbColor={
+            Boolean(value)
+              ? CONSTANT.color[theme].primary
+              : CONSTANT.color[theme].white
+          }
+          trackColor={
+            Boolean(value)
+              ? CONSTANT.color[theme].primaryFaded
+              : CONSTANT.color[theme].gray50
+          }
+          ios_backgroundColor={CONSTANT.color[theme].gray50}
+          value={value}
+          onValueChange={_clickSwitch}
+        />
       </View>
     </View>
   );

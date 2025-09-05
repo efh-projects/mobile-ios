@@ -34,13 +34,17 @@ const CONSTANT = {
     h_full: screenH,
     w_ratio: (ratio = 1, width = screenW) => Number(width * Number(ratio)),
     h_ratio: (ratio = 1, height = screenH) => Number(height * Number(ratio)),
+    w_split: (number = 1, gap = 0, padding = 0, width = screenW) =>
+      Number(width - Number(padding + gap)) / Number(number),
   },
   icon: {
+    naira: "₦",
     user: "user",
     mail: "mail",
     moon: "moon",
     lock: "lock",
     eye: "eye",
+    search: "search",
     eye_off: "eye-off",
     shield: "shield",
     check: "check",

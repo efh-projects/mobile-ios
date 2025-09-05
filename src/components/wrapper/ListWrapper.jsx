@@ -13,11 +13,13 @@ const ListWrapper = ({
   loadMoreFunc = async () => {},
   canLoadMore = false,
   estimatedItemSize = 100,
+  numColumns = 1,
   isLoading = false,
   ListEmptyComponent = <NotFound text="Not found" />,
   gapSize = CONSTANT.dimension.m,
   padding = 0,
   paddingTop = 0,
+  paddingBottom,
   paddingVertical = 0,
   paddingHorizontal = 0,
 }) => {
@@ -29,7 +31,7 @@ const ListWrapper = ({
       paddingTop: paddingTop,
       paddingVertical: paddingVertical,
       paddingHorizontal: paddingHorizontal,
-      paddingBottom: keyboardHeight,
+      paddingBottom: paddingBottom || keyboardHeight,
     },
   });
 
@@ -64,6 +66,7 @@ const ListWrapper = ({
       keyExtractor={keyExtractor}
       contentContainerStyle={styles.list}
       estimatedItemSize={estimatedItemSize}
+      numColumns={numColumns}
       showsVerticalScrollIndicator={false}
       onEndReached={loadMoreFunc ? handleLoadMore : null}
       onEndReachedThreshold={0.5} // Trigger loadMoreFunc when 50% from the end

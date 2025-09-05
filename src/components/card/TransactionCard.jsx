@@ -50,7 +50,7 @@ const TransactionCard = ({ data = {} }) => {
             Deposit To Birthday Hair Plan
           </CustomText>
           <CustomText type="h5" style={styles.amount} right>
-            ₦ 16400.00
+            {CONSTANT.icon.naira} 16400.00
           </CustomText>
         </View>
         <View style={styles.holder}>

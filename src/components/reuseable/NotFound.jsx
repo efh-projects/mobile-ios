@@ -8,7 +8,7 @@ const NotFound = ({
   isLoading = true,
   loaderType = "",
 }) => {
-  const theme = useSelector((s) => s.app.theme);
+  const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     block: {
       width: "100%",
@@ -37,6 +37,8 @@ const NotFound = ({
               dummyArr?.map((item, index) => <FaqLoader key={index} />)
             ) : Boolean(loaderType === "transaction") ? (
               dummyArr?.map((item, index) => <TransactionLoader key={index} />)
+            ) : Boolean(loaderType === "package") ? (
+              dummyArr?.map((item, index) => <PackageLoader key={index} />)
             ) : (
               <ActivityIndicator
                 size={CONSTANT.dimension.m}
@@ -55,7 +57,7 @@ const NotFound = ({
 export default memo(NotFound);
 
 const FaqLoader = () => {
-  const theme = useSelector((s) => s.app.theme);
+  const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     component: {
       width: "100%",
@@ -81,14 +83,14 @@ const FaqLoader = () => {
 
   return (
     <View style={styles.component}>
-      <View style={styles.text}></View>
-      <View style={styles.dot}></View>
+      <View style={styles.text} />
+      <View style={styles.dot} />
     </View>
   );
 };
 
 const TransactionLoader = () => {
-  const theme = useSelector((s) => s.app.theme);
+  const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
     component: {
       width: "100%",
@@ -116,12 +118,77 @@ const TransactionLoader = () => {
 
   return (
     <View style={styles.component}>
-      <View style={styles.icon}></View>
+      <View style={styles.icon} />
 
       <View style={styles.detail}>
-        <View style={[styles.text, { width: "80%" }]}></View>
-        <View style={[styles.text, { width: "30%" }]}></View>
+        <View style={[styles.text, { width: "80%" }]} />
+        <View style={[styles.text, { width: "30%" }]} />
       </View>
+    </View>
+  );
+};
+
+const PackageLoader = () => {
+  const theme = useSelector((state) => state.app.theme);
+  const m = CONSTANT.dimension.m;
+  const styles = StyleSheet.create({
+    split: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: m,
+    },
+    component: {
+      width: CONSTANT.dimension.w_split(2, m, m * 2),
+      height: 150,
+      padding: CONSTANT.dimension.m,
+      justifyContent: "space-between",
+      backgroundColor: CONSTANT.color[theme].white,
+      borderRadius: CONSTANT.dimension.m,
+    },
+    top: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    detail: {
+      width: "100%",
+      gap: CONSTANT.dimension.xxs,
+    },
+    dot: {
+      width: CONSTANT.dimension.m,
+      height: CONSTANT.dimension.m,
+      backgroundColor: CONSTANT.color[theme].gray50,
+      borderRadius: CONSTANT.dimension.s,
+    },
+    text: {
+      height: CONSTANT.dimension.xs,
+      backgroundColor: CONSTANT.color[theme].gray50,
+      borderRadius: CONSTANT.dimension.s,
+    },
+  });
+
+  const SingleItem = () => {
+    return (
+      <View style={styles.component}>
+        <View style={styles.top}>
+          <View style={styles.dot} />
+          <View style={[styles.text, { width: "35%" }]} />
+        </View>
+
+        <View style={styles.detail}>
+          <View style={[styles.text, { width: "80%" }]} />
+          <View style={[styles.text, { width: "20%" }]} />
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.split}>
+      <SingleItem />
+      <SingleItem />
     </View>
   );
 };

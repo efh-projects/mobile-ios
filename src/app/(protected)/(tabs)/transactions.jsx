@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { TransactionCard } from "../../../components/card";
@@ -35,9 +36,11 @@ export default function Transactions() {
     });
   });
 
-  useEffect(() => {
-    _fetchTransactions(1);
-  }, [sort]);
+  useFocusEffect(
+    useCallback(() => {
+      _fetchTransactions(1);
+    }, [sort])
+  );
 
   return (
     <View style={styles.page}>

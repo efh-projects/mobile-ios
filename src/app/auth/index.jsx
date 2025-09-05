@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { SuccessCard } from "../../components/card";
 import {
@@ -23,11 +23,35 @@ export default function Main() {
       justifyContent: "space-between",
       backgroundColor: CONSTANT.color[theme].primary,
     },
+    data: {
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: CONSTANT.dimension.m,
+    },
+    logo: {
+      width: 100,
+      height: 100,
+      backgroundColor: CONSTANT.color[theme].gray50,
+      borderRadius: CONSTANT.dimension.round,
+    },
+    appname: {
+      color: CONSTANT.color[theme].white,
+      fontWeight: CONSTANT.f_weight.bold,
+    },
   });
 
   return (
     <SafeAreaWrapper style={styles.page} statusMode={"light"}>
-      <Text>App Name and Write ups</Text>
+      <View />
+
+      {/**app logo */}
+      <View style={styles.data}>
+        <View style={styles.logo} />
+        <CustomText type="h3" style={styles.appname} center>
+          Custom App Name
+        </CustomText>
+      </View>
 
       {/**auth */}
       <AuthComponent />
