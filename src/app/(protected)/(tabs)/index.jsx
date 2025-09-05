@@ -3,7 +3,7 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { PackageCard } from "../../../components/card";
+import { PackageCard, SuccessCard } from "../../../components/card";
 import {
   AppButton,
   CustomText,
@@ -275,6 +275,36 @@ const NewPackageComponent = ({ refreshFunc = () => {} }) => {
     photo: {},
     description: "",
   });
+  const [hasDesc, setHasDesc] = useState(false);
+  const canProceed = true;
+
+  const [createPackageSuccessful, setCreatePackageSuccessful] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const _createPackage = DEBOUNCE(async () => {
+    const res = true;
+
+    if (res) {
+      setCreatePackageSuccessful(true);
+      refreshFunc(); //refresh the package list
+      setModalVisible(false);
+    }
+  });
+
+  //--reset params
+  const _resetForm = () => {
+    setForm({
+      title: "",
+      is_defined: false,
+      target_amount: 0,
+      auto_complete: false,
+      fixed_deadline: false,
+      duration: "",
+      deadline: new Date(),
+      has_photo: false,
+      photo: {},
+      description: "",
+    });
+  };
 
   return (
     <>
@@ -300,6 +330,7 @@ const NewPackageComponent = ({ refreshFunc = () => {} }) => {
         isVisible={modalVisible}
         setIsVisible={setModalVisible}
         containerStyle={styles.modal}
+        onCloseFunc={_resetForm}
         showBackDrop
       >
         {/**title */}
@@ -368,10 +399,45 @@ const NewPackageComponent = ({ refreshFunc = () => {} }) => {
         </>
 
         {/**description */}
+        <>
+          <FormInput
+            type="switch"
+            label={"Add Extra Note"}
+            value={hasDesc}
+            onPress={() => {
+              setHasDesc((prev) => !prev);
+            }}
+          />
+
+          {hasDesc && (
+            <FormInput
+              type={"textarea"}
+              label={""}
+              placeholder={"Write more about the package"}
+              form={form}
+              setForm={setForm}
+              name={"description"}
+            />
+          )}
+        </>
 
         {/**button */}
-        <AppButton title="Create" />
+        <AppButton
+          title="Create"
+          onPress={_createPackage}
+          isLoading={isLoading}
+          isDisabled={!canProceed}
+        />
       </PopupModalWrapper>
+
+      {/**create package success */}
+      <SuccessCard
+        isSuccessful={createPackageSuccessful}
+        setIsSuccessful={setCreatePackageSuccessful}
+        title="Create Package Successful"
+        description="Your package has been created successfully. Try your best to meet up to your set target in due time."
+        buttonTitle="Continue"
+      />
     </>
   );
 };

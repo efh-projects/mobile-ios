@@ -33,11 +33,11 @@ const FormInput = ({
           placeholder={placeholder}
           icon={icon}
           mode={mode}
-          disabled={disabled}
           value={value}
           form={form}
           name={name}
           setForm={setForm}
+          disabled={disabled}
         />
       )}
 
@@ -52,6 +52,18 @@ const FormInput = ({
           danger={danger}
         />
       )}
+
+      {type === "textarea" && (
+        <FormInputTextarea
+          label={label}
+          placeholder={placeholder}
+          value={value}
+          form={form}
+          name={name}
+          setForm={setForm}
+          disabled={disabled}
+        />
+      )}
     </>
   );
 };
@@ -63,11 +75,11 @@ const FormInputText = ({
   placeholder = "Type here",
   icon = "info",
   mode = "text",
-  disabled = false,
   value,
   form = {},
   name = "",
   setForm = () => {},
+  disabled = false,
 }) => {
   const theme = useSelector((state) => state.app.theme);
   const styles = StyleSheet.create({
@@ -159,6 +171,7 @@ const FormInputText = ({
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
           editable={!disabled}
+          cursorColor={CONSTANT.color[theme].primary}
         />
 
         {Boolean(isPassword) && (
@@ -247,6 +260,92 @@ const FormInputSwitch = ({
           ios_backgroundColor={CONSTANT.color[theme].gray50}
           value={value}
           onValueChange={_clickSwitch}
+        />
+      </View>
+    </View>
+  );
+};
+
+const FormInputTextarea = ({
+  label = "",
+  placeholder = "Type here",
+  value,
+  form = {},
+  name = "",
+  setForm = () => {},
+  disabled = false,
+}) => {
+  const theme = useSelector((state) => state.app.theme);
+  const styles = StyleSheet.create({
+    component: {
+      width: "100%",
+      gap: CONSTANT.dimension.xs,
+    },
+    label: {
+      color: CONSTANT.color[theme].black,
+    },
+    tab: {
+      width: "100%",
+      height: CONSTANT.dimension.h_ratio(1 / 4),
+      paddingHorizontal: CONSTANT.dimension.m,
+      flexDirection: "row",
+      alignItems: "center",
+      borderRadius: CONSTANT.dimension.s,
+      borderWidth: 0.8,
+    },
+    icon: {
+      width: 24,
+      height: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    input: {
+      height: "100%",
+      flex: 1,
+      fontSize: CONSTANT.f_size.m,
+      fontWeight: CONSTANT.f_weight.regular,
+      color: CONSTANT.color[theme].gray200,
+      textAlignVertical: "top",
+    },
+  });
+
+  const formValue = Boolean(name) ? form[name] : "";
+
+  const [isTyping, setIsTyping] = useState(false);
+
+  return (
+    <View style={styles.component}>
+      {Boolean(label) && (
+        <CustomText type="h5" style={styles.label}>
+          {label}
+        </CustomText>
+      )}
+
+      <View
+        style={[
+          styles.tab,
+          {
+            borderColor: isTyping
+              ? CONSTANT.color[theme].primary
+              : CONSTANT.color[theme].gray50,
+          },
+        ]}
+      >
+        <TextInput
+          placeholder={placeholder}
+          placeholderTextColor={CONSTANT.color[theme].gray100}
+          inputMode={"text"}
+          style={styles.input}
+          value={value || formValue}
+          onChangeText={(text) =>
+            setForm((prev) => ({ ...prev, [name]: String(text) }))
+          }
+          onFocus={() => setIsTyping(true)}
+          onBlur={() => setIsTyping(false)}
+          editable={!disabled}
+          multiline={true}
+          autoCapitalize="none"
+          cursorColor={CONSTANT.color[theme].primary}
         />
       </View>
     </View>

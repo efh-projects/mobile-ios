@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
 import { useSelector } from "react-redux";
 import { useKeyboardHeight } from "../../hooks";
@@ -31,9 +31,7 @@ const PopupModalWrapper = ({
       maxHeight:
         keyboardHeight < 64
           ? CONSTANT.dimension.h_ratio(1 / 1.2)
-          : Platform.OS === "ios"
-          ? CONSTANT.dimension.h_ratio(1 / 1.2)
-          : CONSTANT.dimension.h_ratio(1 / 3),
+          : CONSTANT.dimension.h_ratio(1 / 2.3),
       position: "absolute",
       bottom: 0,
       left: 0,
@@ -61,6 +59,7 @@ const PopupModalWrapper = ({
     },
     container: {
       width: "100%",
+      minHeight: "100%",
       padding: CONSTANT.dimension.m,
       paddingBottom: keyboardHeight / 2,
     },
@@ -87,7 +86,7 @@ const PopupModalWrapper = ({
       backdropOpacity={showBackDrop ? 0.15 : 0}
       backdropColor={CONSTANT.color[theme].black}
       hideModalContentWhileAnimating={true}
-      avoidKeyboard={true}
+      //avoidKeyboard={true}
     >
       <View style={styles.modalInset}>
         <View style={styles.header}>
@@ -99,6 +98,7 @@ const PopupModalWrapper = ({
           contentContainerStyle={[styles.container, containerStyle]}
           bounces={Boolean(canBounce)}
           scrollEnabled={!Boolean(stopScroll)}
+          nestedScrollEnabled={true}
         >
           {children}
         </ScrollView>

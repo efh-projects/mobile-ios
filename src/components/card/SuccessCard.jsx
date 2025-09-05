@@ -41,18 +41,20 @@ const SuccessCard = ({
       router.dismiss(dismissCount);
     }
 
-    if (!path) return;
+    if (path) {
+      if (dismissAll && router.canDismiss()) {
+        router.dismissTo(path);
+        return;
+      }
 
-    if (dismissAll && router.canDismiss()) {
-      router.dismissTo(path);
-      return;
+      if (pushRoute) {
+        router.push(path);
+      } else {
+        router.navigate(path);
+      }
     }
 
-    if (pushRoute) {
-      router.push(path);
-    } else {
-      router.navigate(path);
-    }
+    setIsSuccessful(false);
 
     return;
   });
